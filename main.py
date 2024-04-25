@@ -46,5 +46,7 @@ async def get_similarity(vector1: List[float], vector2: List[float]):
 
     
 if __name__ == "__main__":
+    print("Starting FastAPI server...")
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+    print("FastAPI server started successfully!")
