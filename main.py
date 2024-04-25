@@ -18,6 +18,7 @@ async def verify(feature_vectors: List[List[float]]):
     print(11)
     return {"result": "Same person" if result else "Different persons"}
 '''
+'''
 @app.post("/predict")
 async def predict(image_urls: List[str]):
     images = [Image.open(requests.get(url, stream=True).raw) for url in image_urls]
@@ -26,6 +27,16 @@ async def predict(image_urls: List[str]):
     
     feature_vectors = [vector.tolist() if vector is not None else None for vector in feature_vectors]
     
+    return {"feature_vectors": feature_vectors}
+    '''
+@app.post("/predict")
+async def predict(files: List[UploadFile] = File(...)):
+    images = [Image.open(io.BytesIO(await file.read())) for file in files]
+
+    feature_vectors = extract_feature_vectors(images)
+
+    feature_vectors = [vector.tolist() if vector is not None else None for vector in feature_vectors]
+
     return {"feature_vectors": feature_vectors}
 
 @app.post("/calculate_similarity")
